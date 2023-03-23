@@ -1,0 +1,16 @@
+---
+title: "homework4"
+name: "Reshad Alam"
+format: html
+editor: visual
+---
+
+```{r}
+install.packages("usethis")
+
+## usethis::use_git()
+
+## Testing Git commit
+
+```
+
