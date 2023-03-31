@@ -1,16 +1,41 @@
 ---
-title: "homework4"
+title: "Homework 4"
 name: "Reshad Alam"
-format: html
-editor: visual
+format: 
+  html:
+    embeded-resources: true
 ---
 
+## Reddit Data Analysis
 ```{r}
 install.packages("usethis")
-
 ## usethis::use_git()
-
-## Testing Git commit
-
 ```
 
+## Part 1: Subreddit r/Baking
+```{r}
+library(tidyverse)
+library(tidytext)
+library(dplyr)
+library(ggplot2)
+install.packages("RedditExtractoR")
+library(RedditExtractoR)
+
+baking_posts <- find_subreddits("Baking", limit = 100, sort_by = "top")
+
+baking_posts_clean <- baking_posts %>%
+  select(title, selftext) %>%
+  mutate(text = paste(title, selftext, sep = " ")) %>%
+  unnest_tokens(word, text) %>%
+  stop_words(baking_posts)
+
+baking_word_counts <- baking_posts_clean %>%
+  count(words, sort = TRUE) %>%
+  top_n(50)
+
+ggplot(baking_word_counts, aes(x = reorder(word, n), y = n)) + 
+  geom_bar(stat = "identity") +
+  ylab("frequency") +
+  ggtitle("Top Words in r/Baking")
+
+```
