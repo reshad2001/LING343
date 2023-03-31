@@ -39,3 +39,22 @@ ggplot(baking_word_counts, aes(x = reorder(word, n), y = n)) +
   ggtitle("Top Words in r/Baking")
 
 ```
+
+## Part 2: User Analysis 
+```{r}
+user_comments <- get_reddit_user_comments("username")
+
+user_comments_clean <- user_comments %>%
+  select(body) %>%
+  unnest_tokens(word, body) %>%
+  stop_words(user_comments)
+
+user_word_counts <- user_comments_clean %>% 
+  count(word, sort = TRUE) %>%
+  top_n(50)
+
+ggplot(head(words, 50), aes(x = n, y = reorder(word, n))) +
+  geom_col() +
+  labs(x = "frequency", y = NULL, title = "Top Words in User's Reddit Comments")
+```
+
